@@ -88,6 +88,6 @@ php bin/console user:add-role user ROLE_ADMIN
 
 ## Change user password
 ```
-php bin/console user:change-password user ROLE_ADMIN
+php bin/console user:change-password user
 ```
 
