@@ -20,17 +20,13 @@ doctrine:
         auto_mapping: true
         result_cache_driver:
           type: predis
-          host: localhost
         metadata_cache_driver:
           type: predis
-          host: localhost
         query_cache_driver:
           type: predis
-          host: localhost
         second_level_cache:
           region_cache_driver:
             type: predis
-            host: localhost
           region_lifetime: 3600 # 1 hour
         mappings:
             App:
