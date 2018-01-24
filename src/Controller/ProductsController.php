@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Entity\Variant;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +42,7 @@ class ProductsController extends Controller
 
     /**
      * @Route("/products/{product}/show", name="products_show")
+     * @Cache(expires="+1 hours")
      */
     public function show(Request $request, Product $product)
     {
@@ -57,7 +59,7 @@ class ProductsController extends Controller
         $query = $request->get('q');
 
         $products = $products_repository->search($query);
-        
+
         return $this->render('products/search.html.twig', ['products' => $products, 'search_query' => $query]);
     }
 }
