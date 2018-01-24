@@ -30,7 +30,8 @@ class ProductRepository extends ServiceEntityRepository implements ListRepositor
     {
 
         $values = $this->elasticSearchService->simpleQuerySearch($query, 'product', self::SEARCH_FIELDS);
-
+        $models = [];
+        
         if (count($values) > 0) {
             $query = $this->getEntityManager()
                 ->createQueryBuilder();
@@ -49,12 +50,13 @@ class ProductRepository extends ServiceEntityRepository implements ListRepositor
             }
 
             foreach ($values as $key => $value) {
-                $values[$key] = $results_by_id[$value];
+                if (key_exists($value, $results_by_id))
+                    $models[] = $results_by_id[$value];
             }
         }
 
 
-        return $values;
+        return $models;
     }
 
 

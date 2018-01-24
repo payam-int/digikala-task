@@ -33,6 +33,8 @@ interface ElasticSearchMapping
      */
     public function serialize($entity): array;
 
+    public function delete($entity);
+
     /**
      * @return array
      */

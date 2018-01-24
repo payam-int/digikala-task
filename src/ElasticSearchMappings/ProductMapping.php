@@ -60,6 +60,15 @@ class ProductMapping implements ElasticSearchMapping
         ];
     }
 
+    public function delete($entity)
+    {
+        return [
+            'type' => 'product',
+            'id' => $entity->getId()
+        ];
+    }
+
+
     /**
      * @return array
      */

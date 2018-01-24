@@ -41,10 +41,19 @@ class ElasticSearchEventSubscriber implements EventSubscriber
         $this->elastic_search->index($entity);
     }
 
+    public function postRemove(LifecycleEventArgs $args)
+    {
+        if (!$this->elastic_search)
+            return;
+
+        $entity = $args->getEntity();
+        $this->elastic_search->delete($entity);
+    }
+
     public function getSubscribedEvents()
     {
         return [
-            'postUpdate', 'postPersist'
+            'postUpdate', 'postPersist', 'postRemove'
         ];
     }
 }

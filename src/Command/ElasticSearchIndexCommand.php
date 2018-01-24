@@ -37,13 +37,18 @@ class ElasticSearchIndexCommand extends Command
     {
         $this
             ->setDescription('Index all selected entities in database')
-            ->addArgument('entity_class', InputArgument::REQUIRED, 'Entity class');
+            ->addArgument('entity_class', InputArgument::REQUIRED, 'Entity class')
+            ->addOption('clear-type', 'c', InputOption::VALUE_REQUIRED, 'Clear type before insert.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
         $entity_class = $input->getArgument('entity_class');
+        if ($input->hasOption('clear-index')) {
+            $type = $input->getOption('clear-index');
+            $this->elasticSearch->clearType($type);
+        }
 
         $all = $this->entityManager->getRepository($entity_class)->findAll();
 

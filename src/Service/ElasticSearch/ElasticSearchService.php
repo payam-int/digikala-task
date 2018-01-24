@@ -9,6 +9,7 @@
 namespace App\Service\ElasticSearch;
 
 
+use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Exception;
@@ -26,6 +27,9 @@ class ElasticSearchService
 
     private $configuration;
 
+    /**
+     * @var Client $client
+     */
     private $client;
 
     private $mappings = [];
@@ -180,6 +184,41 @@ class ElasticSearchService
             $this->cache->save($search_result);
 
             return $result;
+        }
+    }
+
+    public function delete($entity)
+    {
+        foreach ($this->mappings as $mapping) {
+            if ($mapping->accept($entity)) {
+                $params = $mapping->delete($entity);
+                $params = $params + ['index' => $this->configuration['index']];
+
+                try {
+                    $response = $this->client->delete($params);
+                } catch (\Exception $e) {
+                    // ignore
+                }
+            }
+        }
+    }
+
+    public function clearType($type)
+    {
+        $params = [
+            'index' => $this->configuration['index'],
+            'type' => $type,
+            'body' => [
+                'query' => [
+                    'match_all' => []
+                ]
+            ]
+        ];
+
+        try {
+            $this->client->deleteByQuery($params);
+        } catch (Exception $e) {
+            // ignore
         }
     }
 
