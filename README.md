@@ -73,13 +73,21 @@ php bin/console elastic-search:index 'App\Entity\Product' --clear-type product
 Settings are in `config/packages/framework.yaml` and `config/packages/doctrine.yaml`.
 Default is `redis://localhost:6379`. You can set different caches for different purposes.
 
-For clearing cache type this:
-```
-php bin/console cache:clear
-php 
-```
-
 ## Run server
 ```
 php bin/console server:run
 ```
+
+## Creating admin user
+You have to create a user by register form.
+
+Making a user admin:
+```
+php bin/console user:add-role user ROLE_ADMIN
+```
+
+## Change user password
+```
+php bin/console user:change-password user ROLE_ADMIN
+```
+
