@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1 class="ui header">Delete {{ entity_type }}</h1>
+    <p>
+Are you sure you want to delete <em>"{{ entity_name }}"</em>?</p>
+<form method="post" class="ui form">
+    <button type="submit" class="ui red button">Delete</button><a href="{{ path('products_admin') }}" class="ui button">Cancel</a>
+</form>
+{% endblock %}

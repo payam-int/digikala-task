@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'forms/semantic-ui-forms-theme.html.twig' %}
+
+{% block body %}
+
+    <h1 class="ui header">Add variant</h1>
+    {{ form_start(form) }}
+    <div class="ui form">
+        <div class="field">
+            {{ form_row(form.product) }}
+        </div>
+        <div class="field">
+            {{ form_row(form.color) }}
+        </div>
+        <div class="field">
+            {{ form_row(form.price) }}
+        </div>
+        <button type="submit" class="ui primary button">Add</button>
+
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

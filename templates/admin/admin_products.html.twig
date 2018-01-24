@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="ui header">Manage Products</h1><br>
+    <a class="ui primary button" href="{{ path('products_admin_add') }}"><i class="add icon"></i> Add product</a>
+    <br><br><br>
+    <table class="ui very basic table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Variations</th>
+            <th>Operations</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products.currentPageResults %}
+            <tr>
+                <td class="collapsing">{{ product.id }}</td>
+                <td><a href="{{ path('products_show', {product: product.id}) }}">{{ product.title }}</a></td>
+                <td class="collapsing">{{ product.variants.count }}</td>
+                <td class="collapsing"><a href="{{ path('products_admin_edit', {product: product.id}) }}"
+                                          class="ui button">Edit</a><a
+                            href="{{ path('products_admin_delete', {product: product.id}) }}" class="ui red button">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination-wrapper">
+            {{ pagerfanta(products, 'semantic_ui') }}
+    </div>
+
+{% endblock %}

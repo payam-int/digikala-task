@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="ui header">Manage Variants</h1><br>
+    <a class="ui primary button" href="{{ path('variants_admin_add') }}"><i class="add icon"></i> Add variant</a>
+    <br><br><br>
+    <table class="ui very basic table">
+        <thead>
+        <tr>
+            <th class="collapsing">Id</th>
+            <th>Product Title</th>
+            <th>Color</th>
+            <th>Price</th>
+            <th class="collapsing">Operations</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for variant in variants.currentPageResults %}
+            <tr>
+                <td>{{ variant.id }}</td>
+                <td>{{ variant.product.title }}</td>
+                <td>{{ variant.color }}</td>
+                <td>{{ variant.price }}</td>
+                <td class="collapsing"><a href="{{ path('variants_admin_edit', {variant: variant.id}) }}" class="ui button">Edit</a><a href="{{ path('variants_admin_delete', {variant: variant.id}) }}" class="ui red button">Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination-wrapper">
+    {{ pagerfanta(variants, 'semantic_ui') }}
+    </div>{% endblock %}

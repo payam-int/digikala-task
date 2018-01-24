@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'forms/semantic-ui-forms-theme.html.twig' %}
+{% block breadcrumb %}
+    <a class="section">Home</a>
+    <i class="right angle icon divider"></i>
+    <div class="active section">Login</div>
+{% endblock %}
+
+{% block body %}
+    <h1 class="ui header">Login</h1>
+    {% if error %}
+        <div class="ui message error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    <div class="ui form">
+        {{ form_start(form) }}
+        <div class="field">
+            {{ form_row(form._username) }}
+        </div>
+        <div class="field">
+            {{ form_row(form._password) }}
+        </div>
+
+        <button type="submit" class="ui button">Login</button>
+        {{ form_end(form) }}
+    </div>
+
+
+{% endblock %}

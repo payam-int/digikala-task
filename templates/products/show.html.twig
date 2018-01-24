@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block breadcrumb %}
+    <a class="section">Home</a>
+    <i class="right angle icon divider"></i>
+    <a class="section" href="{{ path('products') }}">Products</a>
+    <i class="right angle icon divider"></i>
+    <div class="active section">{{ product.title }}</div>
+{% endblock %}
+{% block body %}
+    <article>
+        <h1>{{ product.title }}</h1>
+        <p>{{ product.description }}</p>
+
+        <div id="variants-box">
+            <h3>Variants</h3>
+            <div class="ui three column grid">
+                <div class="row">
+                    {% for variant in product.variants %}
+                        <div class="column">
+                            <div class="ui segment">
+                                <div>
+                                    <h4>Color</h4>
+                                    {{ variant.color }}
+                                </div>
+                                <div>
+                                    <h4>Price</h4>
+                                    {{ variant.price }}$
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    {% else %}
+                        <div class="column">
+                            There is no variant for this product.
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </article>
+{% endblock %}

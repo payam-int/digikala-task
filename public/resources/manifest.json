@@ -1,0 +1,11 @@
+{
+  "resources/css/layout.css": "/resources/css/layout.css",
+  "resources/fonts/icons.eot": "/resources/fonts/icons.674f50d2.eot",
+  "resources/fonts/icons.ttf": "/resources/fonts/icons.b06871f2.ttf",
+  "resources/fonts/icons.woff": "/resources/fonts/icons.fee66e71.woff",
+  "resources/fonts/icons.woff2": "/resources/fonts/icons.af7ae505.woff2",
+  "resources/images/flags.png": "/resources/images/flags.9c74e172.png",
+  "resources/images/icons.svg": "/resources/images/icons.912ec66d.svg",
+  "resources/lib/semantic/css/semantic.css": "/resources/lib/semantic/css/semantic.css",
+  "resources/lib/semantic/js/semantic.js": "/resources/lib/semantic/js/semantic.js"
+}

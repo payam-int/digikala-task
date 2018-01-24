@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block breadcrumb %}
+    <a class="section">Home</a>
+    <i class="right angle icon divider"></i>
+    <div class="active section">Search</div>
+{% endblock %}
+
+{% block body %}
+    <h1 class="ui header">Search results</h1>
+    <p>Results for: <em>{{ search_query }}</em></p>
+    <div class="ui grid">
+
+        {% for product in products %}
+            <div class="eight wide column">
+                <div class="ui segment">
+                    <div class="ui item product">
+                        <div class="content">
+                            <h3 class="ui header"><a class="header"
+                                                     href="{{ path('products_show', {product: product.id}) }}">{{ product.title }}</a>
+                            </h3>
+                            <div class="product-description">
+                                <p>{{ product.description }}</p>
+                            </div>
+                            <div class="extra">
+                                <a href="{{ path('products_show', {product: product.id}) }}"
+                                   class="ui right floated button">
+                                    <i class="arrow right icon"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="eight wide column">
+                No matchings found.
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

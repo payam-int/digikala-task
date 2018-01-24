@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('resources/lib/semantic/css/semantic.css') }}">
+    <link rel="stylesheet" href="{{ asset('resources/css/layout.css') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<div class="ui fixed inverted menu">
+    <div class="ui container">
+        <a href="#" class="header item">
+            Simple e-commerce
+        </a>
+        <a class="item" href="{{ path('products') }}">
+            Products
+        </a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="item" href="{{ path('admin_page') }}">
+                Admin
+            </a>
+        {% endif %}
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a class="item" href="{{ path('logout') }}">
+                <i class="sign out icon"></i>
+            </a>
+        {% else %}
+            <a class="item" href="{{ path('register') }}">
+                Register
+            </a>
+            <a class="item" href="{{ path('login') }}">
+                <i class="user circle outline icon"></i>
+            </a>
+        {% endif %}
+        <div class="inverted right menu">
+            <div class="ui right aligned category search item ">
+                <div class="ui transparent icon input inverted">
+                    <form method="get" action="{{ path('products_search') }}">
+                        <input class="prompt" name="q" type="text" placeholder="Search products...">
+                        <i class="search link icon inverted"></i>
+                    </form>
+                </div>
+                <div class="results"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="ui container" id="page">
+
+    <div class="ui breadcrumb" id="breadcrumb">
+        {% block breadcrumb %}{% endblock %}
+    </div>
+    {% block body %}{% endblock %}
+
+</div>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

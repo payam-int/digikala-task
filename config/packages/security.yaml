@@ -1,0 +1,32 @@
+security:
+  encoders:
+    App\Entity\User: bcrypt
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+  providers:
+    database_users:
+        entity: { class: App\Entity\User, property: username }
+
+  firewalls:
+      dev:
+          pattern: ^/(_(profiler|wdt)|css|images|js)/
+          security: false
+      main:
+          anonymous: ~
+
+          form_login:
+              login_path: login
+              check_path: login
+
+          logout:
+              # The route name the user can go to in order to logout
+              path: logout
+              # The name of the route to redirect to after logging out
+              target: home
+
+          # http_basic: ~
+          # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+
+          # form_login: ~
+          # https://symfony.com/doc/current/security/form_login_setup.html
+  access_control:
+    - { path: ^/administrator, roles: [ROLE_ADMIN] }

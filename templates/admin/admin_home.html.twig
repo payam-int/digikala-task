@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="ui equal width grid">
+        <div class="column center aligned">
+            <div class="ui segment">
+                <a href="{{ path('products_admin') }}">
+                    <i class="massive shopping bag icon"></i>
+                </a>
+                <h2>
+                    <a href="{{ path('products_admin') }}">
+                        Products
+                    </a>
+                </h2>
+            </div>
+        </div>
+        <div class="column center aligned">
+            <div class="ui segment">
+                <a href="{{ path('variants_admin') }}">
+                    <i class="massive options icon"></i>
+                </a>
+                <h2><a href="{{ path('variants_admin') }}">Variants</a></h2>
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}
