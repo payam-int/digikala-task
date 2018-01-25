@@ -44,6 +44,24 @@ class ProductRepository extends ServiceEntityRepository implements ListRepositor
         $conditions = [];
         $queryFields = [];
 
+        $fields = $advancedSearch->getSearchFields();
+        if (empty($fields)) {
+            $fields = ["title", "description", "variants.color"];
+        }
+
+        $variantQuery = [
+            "nested" =>
+                [
+                    "path" => "variants",
+                    "query" => [
+                        "bool" => [
+                            "should" => [
+
+                            ]
+                        ]
+                    ]
+                ]
+        ];
 
         if ($advancedSearch->getMinPrice() || $advancedSearch->getMaxPrice()) {
             $priceQuery = [
@@ -61,22 +79,25 @@ class ProductRepository extends ServiceEntityRepository implements ListRepositor
                 $priceQuery['range']['variants.price']['lte'] = $advancedSearch->getMaxPrice();
                 $queryFields[] = 'variants.price.lte';
             }
-            $conditions[] = [
-                "nested" =>
-                    [
-                        "path" => "variants",
-                        "query" => $priceQuery
-                    ]
-            ];
 
+            $variantQuery['nested']['query']['bool']['should'][] = $priceQuery;
         }
 
-        if ($advancedSearch->getSearchQuery()) {
-            $fields = $advancedSearch->getSearchFields();
-            if (empty($fields)) {
-                $fields = ["title", "description", "variants.color"];
-            }
+        if (in_array("variants.color", $fields)) {
+            $colorQuery = [
+                "match" => [
+                    "variants.color" => $advancedSearch->getSearchQuery()
+                ]
+            ];
 
+            unset($fields[array_search("variants.color", $fields)]);
+
+            $variantQuery['nested']['query']['bool']['should'][] = $colorQuery;
+        }
+
+        $conditions[] = $variantQuery;
+
+        if ($advancedSearch->getSearchQuery() && !empty($fields)) {
             $keywordsQuery = [
                 'multi_match' => [
                     'query' => $advancedSearch->getSearchQuery(),

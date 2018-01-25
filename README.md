@@ -5,6 +5,9 @@
 
 This is a simple e-commerce written in php7.1. Lots of Symfony components and bundles are used.
 
+## Guide
+Do following steps to install the app. After that, you have to register on the website. Then you have to add `ROLE_ADMIN` to your user. Then log out and log in to get able to use admin panel.
+
 ## Download
 Open terminal and type:
 ```

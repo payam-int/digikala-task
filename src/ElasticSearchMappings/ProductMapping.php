@@ -12,9 +12,27 @@ namespace App\ElasticSearchMappings;
 use App\Entity\Product;
 use App\Entity\Variant;
 use App\Service\ElasticSearch\ElasticSearchMapping;
+use App\Service\ElasticSearch\ElasticSearchService;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ProductMapping implements ElasticSearchMapping
 {
+
+    /**
+     * @var ElasticSearchService
+     */
+    private $elasticSearchService;
+
+    /**
+     * ProductMapping constructor.
+     * @param $em
+     */
+    public function __construct(ElasticSearchService $elasticSearchService)
+    {
+        $this->elasticSearchService = $elasticSearchService;
+    }
+
+
     public function accept($entity): bool
     {
         if ($entity instanceof Product || $entity instanceof Variant) {
@@ -62,10 +80,16 @@ class ProductMapping implements ElasticSearchMapping
 
     public function delete($entity)
     {
-        return [
-            'type' => 'product',
-            'id' => $entity->getId()
-        ];
+        if ($entity instanceof Product) {
+            return [
+                'type' => 'product',
+                'id' => $entity->getId()
+            ];
+        } else if ($entity instanceof Variant) {
+            $this->elasticSearchService->index($entity->getProduct());
+        }
+
+        return [];
     }
 
 

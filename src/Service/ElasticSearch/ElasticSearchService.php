@@ -79,7 +79,11 @@ class ElasticSearchService
 
     public function putMappings()
     {
-        $response = $this->client->indices()->delete(["index" => $this->configuration['index']]);
+        try {
+            $response = $this->client->indices()->delete(["index" => $this->configuration['index']]);
+        } catch (\Exception $e) {
+            // ignore
+        }
 
         foreach ($this->mappings as $mapping) {
             $params = [
@@ -191,6 +195,7 @@ class ElasticSearchService
 
     public function advancedQuerySearch(string $type, $fields, array $params): array
     {
+
         $queryForHashing = json_encode($params);
         $query_cache_key = sprintf("%s_%s_%s", $type, self::hashFields($fields), self::hashQuery($queryForHashing));
 
@@ -198,6 +203,7 @@ class ElasticSearchService
         $search_result = $this->cache->getItem($query_cache_key);
 
         if ($search_result->isHit()) {
+
             return $search_result->get();
         } else {
             $params = [
