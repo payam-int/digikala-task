@@ -30,7 +30,9 @@
     </div>
 
     <h1 class="ui header">Search results</h1>
-    <p>Results for: <em>{{ search_query }}</em></p>
+    {% if search_query %}
+        <p>Results for: <em>{{ search_query }}</em></p>
+    {% endif %}
     <div class="ui grid">
 
         {% for product in products %}

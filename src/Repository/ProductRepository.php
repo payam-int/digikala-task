@@ -18,7 +18,7 @@ class ProductRepository extends ServiceEntityRepository implements ListRepositor
 
     private $elasticSearchService;
 
-    private const SEARCH_FIELDS = ["title", "description", "variants.color", "variants.price"];
+    private const SEARCH_FIELDS = ["title", "description"];
 
     public function __construct(RegistryInterface $registry, ElasticSearchService $elasticSearchService)
     {

@@ -159,7 +159,6 @@ class User implements UserInterface, \Serializable
     public function addRole(string $role): void
     {
         $this->roles[] = $role;
-        print "hi";
     }
 
 
