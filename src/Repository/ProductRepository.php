@@ -61,7 +61,13 @@ class ProductRepository extends ServiceEntityRepository implements ListRepositor
                 $priceQuery['range']['variants.price']['lte'] = $advancedSearch->getMaxPrice();
                 $queryFields[] = 'variants.price.lte';
             }
-            $conditions[] = $priceQuery;
+            $conditions[] = [
+                "nested" =>
+                    [
+                        "path" => "variants",
+                        "query" => $priceQuery
+                    ]
+            ];
 
         }
 
@@ -89,7 +95,6 @@ class ProductRepository extends ServiceEntityRepository implements ListRepositor
                 ]
             ]
         ];
-
 
         $searchResult = $this->elasticSearchService->advancedQuerySearch('product', $queryFields, $query);
 

@@ -81,7 +81,7 @@ class ProductMapping implements ElasticSearchMapping
                     "properties" => [
                         "title" => ["type" => "text"],
                         "description" => ["type" => "text"],
-                        "varaints" => [
+                        "variants" => [
                             "type" => "nested",
                             "properties" => [
                                 "color" => ["type" => "text"],

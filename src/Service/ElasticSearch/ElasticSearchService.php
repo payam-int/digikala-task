@@ -79,10 +79,12 @@ class ElasticSearchService
 
     public function putMappings()
     {
+        $response = $this->client->indices()->delete(["index" => $this->configuration['index']]);
+
         foreach ($this->mappings as $mapping) {
             $params = [
                 "index" => $this->configuration['index'],
-                "body" => $mapping
+                "body" => $mapping->getMappings()
             ];
 
             $response = $this->client->indices()->create($params);

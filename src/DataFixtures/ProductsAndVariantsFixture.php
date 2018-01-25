@@ -99,23 +99,23 @@ class ProductsAndVariantsFixture extends Fixture
                 "variants" => [
                     [
                         "color" => "Blue",
-                        "price" => "9,999"
+                        "price" => "9999"
                     ],
                     [
                         "color" => "White",
-                        "price" => "9,699"
+                        "price" => "9699"
                     ],
                     [
                         "color" => "Black",
-                        "price" => "9,499"
+                        "price" => "9499"
                     ],
                     [
                         "color" => "Pink",
-                        "price" => "9,499"
+                        "price" => "9499"
                     ],
                     [
                         "color" => "Red",
-                        "price" => "9,499"
+                        "price" => "9499"
                     ]
                 ]
             ]
