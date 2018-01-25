@@ -1,15 +1,13 @@
 # Digikala PHP Task 
 
 
-- I used `Composer` as package manager
-- I used `Symfony Framework bundle` because it has a good convention for directory structures and helped me quick start.
-- I used `Twig` as template engine.
-- For having a more abstract communication with the primary database I used `Doctrine`.
+- I needed a quick start, so I chose `Symfony Framework bundle` and its useful convention for directory structures.
+- I used `Twig` as the template engine.
+- For reaching an abstract communication with the primary database I used `Doctrine` ORM.
 - I used `Symfony Cache` for managing Elasticsearch cache. It's easy to change cache adapter. I used `predis`.
-- For pagination in admin panel and products list is used `pagerfanta-bundle`.
-- I used `Symfony console` to make an interface for some functionalities (Add roles to a user, Change password, Set mappings in Elasticsearch and Index entities exist before installing Elasticsearch.)
-- For dealing with forms I used `Symfony forms`.
-I used `Symfony validation` for validating forms.
+- `pagerfanta-bundle` is used to paginate in admin panel and products list.
+- I used `Symfony Console` to make an interface for the needed functions (e.g. add roles to a user, change passwords, set mappings in Elasticsearch and index entities).
+- For handling form creation and submission I used `Symfony forms` and `Symfony Validation` for validating the submitted values.
 
 ## User Login and Registration
 Controller:
@@ -21,29 +19,32 @@ Forms:
 src/Form/UserLoginType.php
 src/Form/UserRegisterType.php
 ```
-- Symfony security is set up for reading POST parameters of `/login` path automatically and login if its correct.
-- After registeration user automatically logs in. The code is a little tricky here.
-## Searching and showing products
+- `Symfony Security` is set up for reading POST parameters of `/login` path and login automatically  if it is correct.
+-Clients log in automatically after the registration.
+## Searching and viewing products
 Controller:
 ```
 src/Controller/ProductsController.php
 ```
-- There is two tables for `Product` and `Variant` entities.
+- There are two tables for `Product` and `Variant` entities.
 - Every `Product` may have many `Variant` entities.
 
-### Index products in Elasticsearch
-I've made a Service for communicating with Elasticsearch. 
-A product and its variants are indexed together. In order to search get work, you have to put mappings first. I made a command for this:
+### Indexing products in Elasticsearch
+I made a service for communicating with Elasticsearch. 
+A product and its variants are indexed together. In order to make the advanced search form work properly, I made the below command to put mappings in  Elasticsearch index:
 ```
 php bin/console elastic-search:install
 ```
 
-When you do an operation on entities an event would be fired by doctrine. After firing these events Elasticsearch service would send these entities to `ElasticSearchEntityMappings`. EntityMappings handle operations on ElasticSearch database.
-I think it is a common design pattern. 
+When you do an operation on entities, an event would be fired by `Doctrine`. After firing these events Elasticsearch service would send these entities to `ElasticSearchEntityMappings`. EntityMappings handle operations on ElasticSearch database.
 
-#### ElasticSearchEntityMappings
-Entity mappings have to handle operations on one type in an index. They have to implement `ElasticSearchMappings` interface.
-Mappings would be registered to ElasticSearchService at compile time.
+
+#### `ElasticSearchService`
+This service handles indexing entities by `ElasticSearchMapping` classes.
+
+#### `ElasticSearchMapping` classes
+EntityMapping classes handle how entities get indexed in ElasticSearch. Every class is in charge of managing one document type in the index. They have to implement `ElasticSearchMappings` interface.
+Mappings would be registered to `ElasticSearchService` at Kernel's compile time.
 
 ### Searching
 Search queries are made in `ProductRepository`. Caching results are handled by `ElasticSearchService`.
@@ -54,4 +55,4 @@ There is a command for adding a role to a user:
 ```
 php bin/console user:add-role user ROLE_ADMIN
 ```
-After using this command you have to log out and then log in.
+After using this command you have to log out and log in again.
