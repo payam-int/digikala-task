@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Product;
+use App\Entity\ProductAdvancedSearch;
 use App\Service\ElasticSearch\ElasticSearchSearchableRepository;
 use App\Service\ElasticSearch\ElasticSearchService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -29,16 +30,84 @@ class ProductRepository extends ServiceEntityRepository implements ListRepositor
     public function search($query)
     {
 
-        $values = $this->elasticSearchService->simpleQuerySearch($query, 'product', self::SEARCH_FIELDS);
+        $searchResult = $this->elasticSearchService->simpleQuerySearch($query, 'product', self::SEARCH_FIELDS);
+
+        $models = $this->getSearchedModels($searchResult);
+
+        return $models;
+    }
+
+    public function advancedSearch(ProductAdvancedSearch $advancedSearch)
+    {
+        // building query
+
+        $conditions = [];
+        $queryFields = [];
+
+
+        if ($advancedSearch->getMinPrice() || $advancedSearch->getMaxPrice()) {
+            $priceQuery = [
+                'range' => [
+                    'variants.price' => []
+                ]
+            ];
+
+            if ($advancedSearch->getMinPrice()) {
+                $priceQuery['range']['variants.price']['gte'] = $advancedSearch->getMinPrice();
+                $queryFields[] = 'variants.price.gte';
+            }
+
+            if ($advancedSearch->getMaxPrice()) {
+                $priceQuery['range']['variants.price']['lte'] = $advancedSearch->getMaxPrice();
+                $queryFields[] = 'variants.price.lte';
+            }
+            $conditions[] = $priceQuery;
+
+        }
+
+        if ($advancedSearch->getSearchQuery()) {
+            $fields = $advancedSearch->getSearchFields();
+            if (empty($fields)) {
+                $fields = ["title", "description", "variants.color"];
+            }
+
+            $keywordsQuery = [
+                'multi_match' => [
+                    'query' => $advancedSearch->getSearchQuery(),
+                    'fields' => $fields
+                ]
+            ];
+            $queryFields = $queryFields + $fields;
+            $conditions[] = $keywordsQuery;
+        }
+
+
+        $query = [
+            'query' => [
+                'bool' => [
+                    'must' => $conditions
+                ]
+            ]
+        ];
+
+
+        $searchResult = $this->elasticSearchService->advancedQuerySearch('product', $queryFields, $query);
+
+        $models = $this->getSearchedModels($searchResult);
+
+        return $models;
+    }
+
+    private function getSearchedModels(array $searchResult): array
+    {
         $models = [];
-        
-        if (count($values) > 0) {
+        if (count($searchResult) > 0) {
             $query = $this->getEntityManager()
                 ->createQueryBuilder();
             $query = $query
                 ->select('p')
                 ->from('App\Entity\Product', 'p')
-                ->add('where', $query->expr()->in('p.id', $values))
+                ->add('where', $query->expr()->in('p.id', $searchResult))
                 ->setCacheable(true)
                 ->getQuery();
 
@@ -49,12 +118,11 @@ class ProductRepository extends ServiceEntityRepository implements ListRepositor
                 $results_by_id[$result->getId()] = $result;
             }
 
-            foreach ($values as $key => $value) {
+            foreach ($searchResult as $key => $value) {
                 if (key_exists($value, $results_by_id))
                     $models[] = $results_by_id[$value];
             }
         }
-
 
         return $models;
     }

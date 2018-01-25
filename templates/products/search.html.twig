@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% form_theme search_form 'forms/semantic-ui-forms-theme.html.twig' %}
 
 {% block breadcrumb %}
     <a class="section">Home</a>
@@ -7,6 +8,27 @@
 {% endblock %}
 
 {% block body %}
+
+
+    <div class="ui segment">
+        <h1 class="ui header">Search in products</h1>
+        <div class="ui form">
+            {{ form_start(search_form) }}
+            {{ form_row(search_form.searchFields) }}
+            {{ form_row(search_form.searchQuery) }}
+
+            <div class="two fields">
+                {{ form_row(search_form.minPrice) }}
+                {{ form_row(search_form.maxPrice) }}
+            </div>
+            {#{{ form_widget(search_form) }}#}
+
+            <br>
+            <button type="submit" class="ui primary button">Search</button>
+            {{ form_end(search_form) }}
+        </div>
+    </div>
+
     <h1 class="ui header">Search results</h1>
     <p>Results for: <em>{{ search_query }}</em></p>
     <div class="ui grid">

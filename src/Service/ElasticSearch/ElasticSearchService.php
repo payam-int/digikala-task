@@ -187,6 +187,33 @@ class ElasticSearchService
         }
     }
 
+    public function advancedQuerySearch(string $type, $fields, array $params): array
+    {
+        $queryForHashing = json_encode($params);
+        $query_cache_key = sprintf("%s_%s_%s", $type, self::hashFields($fields), self::hashQuery($queryForHashing));
+
+        // getting cache
+        $search_result = $this->cache->getItem($query_cache_key);
+
+        if ($search_result->isHit()) {
+            return $search_result->get();
+        } else {
+            $params = [
+                'type' => $type,
+                'body' => [
+                        '_source' => [''],
+                        'size' => 10
+                    ] + $params
+            ];
+
+            $result = $this->search($params);
+            $search_result->set($result);
+            $this->cache->save($search_result);
+
+            return $result;
+        }
+    }
+
     public function delete($entity)
     {
         foreach ($this->mappings as $mapping) {
