@@ -7,7 +7,7 @@
 - I used `Symfony Cache` for managing Elasticsearch cache. It's easy to change cache adapter. I used `predis`.
 - `pagerfanta-bundle` is used to paginate in admin panel and products list.
 - I used `Symfony Console` to make an interface for the needed functions (e.g. add roles to a user, change passwords, set mappings in Elasticsearch and index entities).
-- For handling form creation and submission I used `Symfony forms` and `Symfony Validation` for validating the submitted values.
+- For handling form creation and submission I used `Symfony Forms` and `Symfony Validation` for validating the submitted values.
 
 ## User Login and Registration
 Controller:
@@ -20,14 +20,17 @@ src/Form/UserLoginType.php
 src/Form/UserRegisterType.php
 ```
 - `Symfony Security` is set up for reading POST parameters of `/login` path and login automatically  if it is correct.
--Clients log in automatically after the registration.
+- Clients log in automatically after the registration.
+
 ## Searching and viewing products
 Controller:
 ```
 src/Controller/ProductsController.php
 ```
+
 - There are two tables for `Product` and `Variant` entities.
 - Every `Product` may have many `Variant` entities.
+
 
 ### Indexing products in Elasticsearch
 I made a service for communicating with Elasticsearch. 
