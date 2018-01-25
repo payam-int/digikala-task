@@ -17,7 +17,7 @@ framework:
     cache:
         # Put the unique name of your app here: the prefix seed
         # is used to compute stable namespaces for cache keys.
-        prefix_seed: pint_digikala
+        prefix_seed: 'digikala_cc:'
 
         # The app cache caches to the filesystem by default.
         # Other options include:

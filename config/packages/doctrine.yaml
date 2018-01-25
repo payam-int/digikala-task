@@ -20,13 +20,17 @@ doctrine:
         auto_mapping: true
         result_cache_driver:
           type: predis
+          namespace: "digikala_rc:"
         metadata_cache_driver:
           type: predis
+          namespace: "digikala_mc:"
         query_cache_driver:
           type: predis
+          namespace: "digikala_qc:"
         second_level_cache:
           region_cache_driver:
             type: predis
+            namespace: "digikala_slc:"
           region_lifetime: 3600 # 1 hour
         mappings:
             App:
