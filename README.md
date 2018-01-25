@@ -6,7 +6,7 @@
 This is a simple e-commerce written in PHP 7. Lots of Symfony components and bundles are used.
 
 ## Guide
-Do following steps to install the app. After that, you have to register on the website. Then you have to add `ROLE_ADMIN` to your user. Then log out and log in to get able to use admin panel.
+Go through the following steps to install the app. After that, you have to register at the website and add `ROLE_ADMIN` to your user. Then log out and log in again to be able to use the admin panel.
 
 ## Download
 Open terminal and type:
@@ -67,7 +67,7 @@ elasticsearch:
       - host: localhost
         port: 9200
 ```
-Host parameters are same as [here](https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_configuration.html).
+Host parameters are the same as [this](https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_configuration.html).
 
 After configuring elastic search run these commands:
 ```
